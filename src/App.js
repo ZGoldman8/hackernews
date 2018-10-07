@@ -50,36 +50,28 @@ class App extends Component {
   render() {
     const { searchTerm, list } = this.state
     return (
-      <div className="App">
+      <div className="page">
+        <div className="interactions">
         <Search value={searchTerm} onChange={this.onSearchChange}>
           Search
         </Search>
+        </div>
         <Table list={list} pattern={searchTerm} onDismiss={this.onDismiss} />
       </div>
     )
   }
 }
 
-class Search extends Component {
-  render() {
-    const { value, onChange, children } = this.props
-    return (
-      <form>
-        {children}
-        <input type="text" value={value} onChange={onChange} />
-      </form>
-    )
-  }
-}
+const Search = ({ value, onChange, children }) =>
+        <form>
+            {children}
+            <input type="text" value={value} onChange={onChange}/>
+        </form>
 
-
-class Table extends Component {
-  render() {
-    const { list, pattern, onDismiss } = this.props
-    return (
-      <div>
+const Table = ({ list, pattern, onDismiss }) =>
+      <div className="table">
         {list.filter(isSearched(pattern)).map(item => (
-          <div key={item.objectId}>
+          <div key={item.objectId} className="table-row">
             <span>
               <a href={item.url}>{item.title}</a>
             </span>
@@ -87,26 +79,18 @@ class Table extends Component {
             <span>{item.num_comments}</span>
             <span>{item.points}</span>
             <span>
-              <Button onClick={() => onDismiss(item.objectId)}>
+              <Button
+                  onClick={() => onDismiss(item.objectId)}
+                  className="button-inline"
+              >
                 Dismiss
               </Button>
             </span>
           </div>
         ))}
       </div>
-    )
-  }
-}
 
-class Button extends Component {
-  render() {
-    const {
-      onClick,
-      className = '',
-      children
-    } = this.props;
-
-    return (
+const Button = ({ onClick, className, children}) =>
       <button
         onClick={onClick}
         className={className}
@@ -114,8 +98,5 @@ class Button extends Component {
       >
         {children}
       </button>
-    )
-  }
-}
 
 export default App
